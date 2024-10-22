@@ -33,8 +33,6 @@ class CheckoutController extends Controller
 
     public function checkout(Request $request)
     {
-    
-    
         try{
 
             $datas = ['id','qty','size','size_qty','size_key','size_price','color','keys','values','prices'];
@@ -561,14 +559,28 @@ class CheckoutController extends Controller
     //*** GET Request
     public function orderDetails(Request $request)
     {
-        try{
-            if($request->has('order_number')){
+        try {
+            // Check if the 'order_number' is present in the request
+            if ($request->has('order_number')) {
                 $order_number = $request->order_number;
-                $order = Order::where('order_number',$order_number)->firstOrFail();
-                return response()->json(['status' => true, 'data' => new OrderDetailsResource($order), 'error' => []]); 
+    
+                // Use first() instead of firstOrFail() to avoid exceptions
+                $order = Order::where('order_number', $order_number)->first();
+    
+                // Check if an order was found
+                if ($order) {
+                    // Return a successful response with order details
+                    return response()->json(['status' => true, 'data' => new OrderDetailsResource($order), 'error' => []]);
+                } else {
+                    // Return a response indicating that the order was not found
+                    return response()->json(['status' => false, 'data' => [], 'error' => ['message' => 'Order not found']]);
+                }
+            } else {
+                // Return a response indicating that 'order_number' is missing
+                return response()->json(['status' => false, 'data' => [], 'error' => ['message' => 'Missing order_number parameter']]);
             }
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
+            // Return a response with an error message if an exception occurs
             return response()->json(['status' => false, 'data' => [], 'error' => ['message' => $e->getMessage()]]);
         }
     }

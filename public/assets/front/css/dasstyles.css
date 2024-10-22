@@ -664,7 +664,9 @@ a, a:hover, a:focus, a:active {
   .process-steps li.activePending .icon {
     background: #e7b309ec;
   }
-
+  .process-steps li.activeConfirmed .icon {
+    background: #EA1179;
+  }
 
   .process-steps li.activeProcessing .icon {
     background: #DA16EC;
@@ -676,7 +678,7 @@ a, a:hover, a:focus, a:active {
   }
 
   .process-steps li.activeShipped .icon {
-    background: #039C0E;
+    background: #6528F7;
   }
 
 

@@ -75,7 +75,8 @@
 		<!-- Hero Area End -->
 	@endif
 
-	@if(count($campaigns)>0)
+    
+	@if(count($campaigns)>1)
 	<!-- Trending Item Area Start -->
 	<section  class="trending">
 		<div class="my-container">
@@ -93,6 +94,7 @@
 				<div class="col-lg-12 remove-padding">
 					<div class="trending-campaign-slider">
 						@foreach($campaigns as $campaign)
+					
 							@include('includes.slider-campaign')
 						@endforeach
 					</div>
@@ -101,7 +103,32 @@
 			</div>
 		</div>
 	</section>
-	<!-- Tranding Item Area End -->
+	@elseif(count($campaigns)==1)
+	<section  class="trending">
+		<div class="my-container">
+			<div class="row">
+				<div class="col-lg-12 remove-padding">
+					<div class="section-top">
+						<h2 class="section-title">
+							Campaigns
+						</h2>
+					{{-- <a href="#" class="link">View All</a> --}}
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12 remove-padding">
+					<div class="">
+						@foreach($campaigns as $campaign)
+					
+							@include('includes.slider-campaign')
+						@endforeach
+					</div>
+				</div>
+	
+			</div>
+		</div>
+	</section>
 	@endif
 	
 

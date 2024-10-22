@@ -2,10 +2,10 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\ProductlistResource;
 
-class CategoryResource extends Resource
+class CategoryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,17 +15,17 @@ class CategoryResource extends Resource
      */
     public function toArray($request)
     {
-      return [
-        'id' => $this->id,
-        'name' => $this->name,
-        'icon' => url('/') . '/assets/images/categories/'.$this->photo,
-        'image' => $this->when($this->image, url('/') . '/assets/images/categories/'.$this->image),
-        'count' => $this->products()->where('status', 1)->count() . ' item(s)',
-        'products' => ProductlistResource::collection($this->products()->where('status', 1)->get()),
-        'subcategories' => route('subcategories', $this->id),
-        'attributes' => route('attibutes', $this->id) . '?type=category',
-        'created_at' => $this->created_at,
-        'updated_at' => $this->updated_at,
-      ];
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'icon' => url('/') . '/assets/images/categories/' . $this->photo,
+            'image' => $this->when($this->image, url('/') . '/assets/images/categories/' . $this->image),
+            'count' => $this->products()->where('status', 1)->count() . ' item(s)',
+            'products' => ProductlistResource::collection($this->products()->where('status', 1)->get()),
+            'subcategories' => route('subcategories', $this->id),
+            'attributes' => route('attibutes', $this->id) . '?type=category',
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
     }
 }

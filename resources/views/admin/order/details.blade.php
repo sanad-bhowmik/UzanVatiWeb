@@ -374,8 +374,30 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                            @php 
+                                          /*  dd($cart->items);
+                                                   $i=0;
+                                              foreach($cart->items as $key => $product){
+                                   
+                                 print_r($product['item']["id"]);
+                                        $p= App\Models\Product::find($product['item']["id"]);
+                                             
+                                             print_r($p);
+                                            echo "\n ================== ".$i."\n";
+                                                 $i++;
+                                              }         
+                                                       
+                                               dd();         
+                                                    */      
+                                             @endphp
                                 @foreach($cart->items as $key => $product)
-                                @php $p= App\Models\Product::find($product['item']["id"]);@endphp
+                                @php 
+                                
+                                $p= App\Models\Product::find($product['item']["id"]);
+                                
+                               
+                                
+                                @endphp
                                     <tr>
                                         
                                             <td><input type="hidden" value="{{$key}}">{{ $product['item']['id'] }}</td>

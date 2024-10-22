@@ -187,7 +187,7 @@ class Product extends Model
 
             $discount_percent = ((($previous_price-$price)*100)/$previous_price) ;
 
-         //   return round($discount_percent) .' % OFF';
+           // return round($discount_percent) .' % OFF';
         }
 
         return "";

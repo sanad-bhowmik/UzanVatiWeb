@@ -270,15 +270,27 @@ class RegisterController extends Controller
 		}{
 
 			if($gs->is_sms==1){
-				$response = Http::get('http://joy.metrotel.com.bd/smspanel/smsapi', [
+			
+			/*	$response = Http::get('http://joy.metrotel.com.bd/smspanel/smsapi', [
 				'api_key' => '$2y$10$UGffpZIkHXi7k1xI5T6KoOSoPahpz8Kj3FvbK05JGQA0h2yr4/b62501',
 				'type' => 'text',
 				'contacts' =>$number,
 				'senderid' =>'8809612440465',
 				'msg' => $msg
 				]); 
-		
-
+		*/
+            $response = Http::get('https://mshastra.com/sendurl.aspx', [
+				'user' => 'playon24',
+				'pwd' => 'sesbheje',
+				'senderid' =>'8809612440465',
+				'mobileno' =>$number,
+				'msgtext' => $msg,
+				'priority' => 'High',
+				'CountryCode' => '880',
+				]); 
+            
+            
+            
 				SmsLog::create([
 					'from' => 'Registration/Forget',
 					'to' => $number,

@@ -81,6 +81,7 @@ Route::prefix('admin')->group(function() {
   Route::post('/order/update/{id}', 'Admin\OrderController@update')->name('admin-order-update');
   Route::get('/orders/pending', 'Admin\OrderController@pending')->name('admin-order-pending');
   Route::get('/orders/processing', 'Admin\OrderController@processing')->name('admin-order-processing');
+  Route::get('/orders/picked', 'Admin\OrderController@picked')->name('admin-order-picked');
   Route::get('/orders/completed', 'Admin\OrderController@completed')->name('admin-order-completed');
   Route::get('/orders/declined', 'Admin\OrderController@declined')->name('admin-order-declined');
   //new by das
@@ -91,7 +92,7 @@ Route::prefix('admin')->group(function() {
 
   Route::get('/orders/confirmed', 'Admin\OrderController@confirmed')->name('admin-order-confirmed');
   Route::get('/orders/shop/confirmed', 'Admin\OrderController@confirmedShop')->name('admin-order-confirmed-shop');
-
+  Route::get('/orders/shop/picked', 'Admin\OrderController@pickedShop')->name('admin-order-confirmed-shop');
   Route::get('/orders/shop/pending', 'Admin\OrderController@pendingShop')->name('admin-order-pending-shop');
   Route::get('/orders/shop/processing', 'Admin\OrderController@processingShop')->name('admin-order-processing-shop');
   Route::get('/orders/shop/completed', 'Admin\OrderController@completedShop')->name('admin-order-completed-shop');
@@ -1060,8 +1061,8 @@ Route::prefix('user')->group(function() {
 
   // User Forgot
   Route::get('/forgot', 'User\ForgotController@showforgotform')->name('user-forgot');
-  Route::post('/forgot', 'User\ForgotController@forgot')->name('user-forgot-submit');
-  
+  Route::post('/forgot/user', 'User\ForgotController@forgot')->name('user-forgot-submit');
+
   // User Forgot Ends
 
   // User Wishlist

@@ -988,7 +988,7 @@ class CheckoutController extends Controller
 
                     $msg="Dear Seller,\nAn order has been placed at your shop.\nOrderNo:".$vorder->order_number.".\nTake necessary steps if order is confirmed/paid/cod.\nThanks www.uzanvati.com ";
                        
-                            $response = Http::get('http://joy.metrotel.com.bd/smspanel/smsapi', [
+                          /*  $response = Http::get('http://joy.metrotel.com.bd/smspanel/smsapi', [
                                 'api_key' => '$2y$10$UGffpZIkHXi7k1xI5T6KoOSoPahpz8Kj3FvbK05JGQA0h2yr4/b62501',
                                 'type' => 'text',
                                 'contacts' =>$vorder->user->phone,
@@ -996,7 +996,17 @@ class CheckoutController extends Controller
                                 'msg' => $msg
                                 ]); 
                                 
-                               
+                               */
+                $response = Http::get('https://mshastra.com/sendurl.aspx', [
+				'user' => 'playon24',
+				'pwd' => 'sesbheje',
+				'senderid' =>'8809612440465',
+				'mobileno' =>$vorder->user->phone,
+				'msgtext' => $msg,
+				'priority' => 'High',
+				'CountryCode' => '880',
+				]); 
+            
                                 
                         
                                 SmsLog::create([
@@ -1059,15 +1069,24 @@ class CheckoutController extends Controller
 
                 $msg="Hello ".$request->name."!\nYou have placed a new order.\nYour order number is ".$order->order_number."\nPlease wait for your delivery. \nThank you. www.uzanvati.com";
                 
-                         $response = Http::get('http://joy.metrotel.com.bd/smspanel/smsapi', [
+                       /*  $response = Http::get('http://joy.metrotel.com.bd/smspanel/smsapi', [
                         'api_key' => '$2y$10$UGffpZIkHXi7k1xI5T6KoOSoPahpz8Kj3FvbK05JGQA0h2yr4/b62501',
                         'type' => 'text',
                         'contacts' =>$request->phone,
                         'senderid' =>'8809612440465',
                         'msg' => $msg
-                        ]); 
+                        ]); */
                 
-                       
+                        $response = Http::get('https://mshastra.com/sendurl.aspx', [
+				'user' => 'playon24',
+				'pwd' => 'sesbheje',
+				'senderid' =>'8809612440465',
+				'mobileno' =>$request->phone,
+				'msgtext' => $msg,
+				'priority' => 'High',
+				'CountryCode' => '880',
+				]); 
+            
                         
                 
                         SmsLog::create([

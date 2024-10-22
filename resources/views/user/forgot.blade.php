@@ -1,7 +1,20 @@
 @extends('layouts.front')
-
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @section('content')
+<style>
+    #newpass,
+    #confirmpass {
+        background-color: #f3f8fc;
+        height: 50px;
+        width: 100%;
+        padding: 0px 30px 0px 65px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
 
+    #newpass {
+        margin-bottom: 2px;
+    }
+</style>
 <div class="breadcrumb-area">
     <div class="container">
         <div class="row">
@@ -52,12 +65,9 @@
                                 </div>
 
                                 <button id="btnVerify" class="otp-send display-none">Verify</button>
-
-
-
-
-
                             </div>
+
+
                             <div id="otp-confirm" class="display-none">
                                 <div class="to-login-page">
                                     <a href="{{ route('user.login') }}">
@@ -66,7 +76,18 @@
                                 </div>
                                 <input class="authdata" type="hidden" value="{{ $langg->lang195 }}">
                                 <button id="submit-data" type="submit" class="submit-btn">Reset Now</button>
+                            </div>
 
+                            <div id="new-pass" class="display-none">
+                                <div class="form-input">
+                                    <input id="newpass" class="authdata " type="" value="" placeholder="New password" required>
+                                    <i class="icofont-lock"></i>
+                                </div>
+                                <div class="form-input">
+                                    <input id="confirmpass" class="authdata" type="" value="" placeholder="Confirm password" required>
+                                    <i class="icofont-ssl-security"></i>
+                                </div>
+                                <button id="submit" type="submit" class="submit-btn">Submit</button>
                             </div>
                         </form>
                     </div>
@@ -83,6 +104,64 @@
 
 <script>
     $(document).ready(function() {
+
+        // 01831370709
+        // password varification
+        // $("#submit").on("click", function(event) {
+        //     event.preventDefault();
+
+        //     var newPassword = $("#newpass").val();
+        //     var confirmPassword = $("#confirmpass").val();
+
+        //     if (newPassword === confirmPassword) {
+        //         if (newPassword.length >= 6 && confirmPassword.length >= 6) {
+        //         } else {
+        //             toastr["error"]("Passwords must be at least 6 characters long.");
+        //         }
+        //     } else {
+        //         toastr["error"]("New Password and Confirm Password do not match.");
+        //     }
+        // });
+        $("#submit").on("click", function(event) {
+            event.preventDefault();
+
+
+            var phone = $("#phone").val();
+            var newPassword = $("#newpass").val();
+            var confirmPassword = $("#confirmpass").val();
+
+            if (newPassword === confirmPassword && newPassword.length >= 6) {
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('user-forgot-submit') }}',
+                    // url: '{{ route('user-forgot-submit') }}',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        password: newPassword,
+                        phone: phone
+                    },
+                    success: function(data) {
+                        toastr["success"](data.message);
+                        $("#newpass").val('');
+                        $("#confirmpass").val('');
+
+                    },
+                    error: function(xhr, status, error) {
+                        toastr["error"]("Error updating password");
+                    }
+                });
+            } else if (newPassword.length < 6) {
+                toastr["error"]("Password must be at least 6 characters long");
+            } else {
+                toastr["error"]("Passwords do not match");
+            }
+        });
+
+        // password varification
 
         $('#phone').on('keyup', function() {
 
@@ -128,9 +207,6 @@
             }
 
 
-
-
-
         }); //end btn counter
 
         $("#btnVerify").on("click", function() {
@@ -142,7 +218,13 @@
 
         }); //end btn otp verify
 
-
+        $("#submit-data").on("click", function(event) {
+            event.preventDefault();
+            // Hide the #otp-confirm elements
+            $('#otp-confirm').addClass('display-none');
+            // Show the #new-pass elements
+            $('#new-pass').removeClass('display-none');
+        });
 
 
         function disableOtpBtn(time) {
@@ -169,12 +251,6 @@
                     btn.style.backgroundColor = "#047204";
                 }
             }());
-
-
-
-
-
-
 
         } // end disable otp
 

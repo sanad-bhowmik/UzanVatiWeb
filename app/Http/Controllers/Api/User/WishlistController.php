@@ -12,6 +12,7 @@ use App\{
 
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 
 class WishlistController extends Controller
@@ -68,38 +69,40 @@ class WishlistController extends Controller
 
     public function addwish(Request $request)
     {
-        try{
+        try {
             $input = $request->all();
             $user = Auth::guard('api')->user();
-            $ck = Wishlist::where('user_id',$user->id)->where('product_id',$input['product_id'])->exists();
-            if(!$ck){
-            $wish = new Wishlist();
-            $wish->user_id = $user->id;
-            $wish->product_id = $input['product_id'];
-            $wish->save();
-                return response()->json(['status' => true, 'data' => ['message' => 'Successfully Added To Wishlist.'], 'error' => []]);
-            }else{
-                return response()->json(['status' => true, 'data' => [], 'error' => ['message' => 'Already Added To Wishlist.']]);
+            $ck = Wishlist::where('user_id', $user->id)->where('product_id', $input['product_id'])->exists();
+    
+            if (!$ck) {
+                $wish = new Wishlist();
+                $wish->user_id = $user->id;
+                $wish->product_id = $input['product_id'];
+                $wish->save();
+    
+                return response()->json(['status' => true, 'data' => ['message' => 'Successfully Added To Wishlist.']]);
+            } else {
+                return response()->json(['status' => false, 'data' => [], 'message' => 'Already Added To Wishlist.'], Response::HTTP_UNAUTHORIZED);
             }
     
-            }
-            catch(\Exception $e){
-                return response()->json(['status' => true, 'data' => [], 'error' => $e->getMessage()]);
-            }
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'data' => [], 'error' => ['message' => $e->getMessage()]]);
+        }
     }
 
     public function removewish($id)
-    {
-       
-        try{
-            $wish = Wishlist::where('product_id',$id)->where('user_id',Auth::user()->id)->first();
+{
+    try {
+        $wish = Wishlist::where('product_id', $id)->where('user_id', Auth::user()->id)->first();
+
+        if ($wish) {
             $wish->delete();
-            return response()->json(['status' => true, 'data' => ['message' => 'Successfully Removed From Wishlist.'], 'error' => []]);
+            return response()->json(['status' => true, 'data' => [], 'message' => 'Successfully Removed From Wishlist.']);
+        } else {
+            return response()->json(['status' => false, 'data' => [], 'message' => 'Product not found in wishlist.'], Response::HTTP_UNAUTHORIZED);
         }
-        catch(\Exception $e){
-            return response()->json(['status' => true, 'data' => [], 'error' => $e->getMessage()]);
-        }
-
+    } catch (\Exception $e) {
+        return response()->json(['status' => false, 'data' => [], 'error' => $e->getMessage()]);
     }
-
+}
 }

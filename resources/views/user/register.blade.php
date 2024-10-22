@@ -8,7 +8,7 @@
       <div class="col-lg-6">
         <nav class="comment-log-reg-tabmenu">
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
-           
+
             {{-- <a class="nav-item nav-link active" id="nav-reg-tab" data-toggle="tab" href="#nav-reg" role="tab" aria-controls="nav-reg" aria-selected="false">
               {{ $langg->lang198 }}
             </a> --}}
@@ -118,10 +118,10 @@
                 </form>
 
                 <p class="text-center">OR</p>
-                   
-                    <a class="btn submit-btn"   href="{{ route('user.login')}}">
-                      {{ $langg->lang197 }}
-                    </a>
+
+                <a class="btn submit-btn" href="{{ route('user.login')}}">
+                  {{ $langg->lang197 }}
+                </a>
               </div>
             </div>
           </div>
@@ -158,11 +158,11 @@
                   <input class="mauthdata" type="hidden" value="{{ $langg->lang177 }}">
                   <button type="submit" class="submit-btn">{{ $langg->lang178 }}</button>
 
-                 
-                    <br>
-                    <a class="btn submit-btn"   href="{{ route('user-register')}}">
-                      {{ $langg->lang198 }}
-                    </a>
+
+                  <br>
+                  <a class="btn submit-btn" href="{{ route('user-register')}}">
+                    {{ $langg->lang198 }}
+                  </a>
                   @if(App\Models\Socialsetting::find(1)->f_check == 1 || App\Models\Socialsetting::find(1)->g_check ==
                   1)
                   <!-- <div class="social-area">
@@ -222,27 +222,18 @@
       } else {
         $('#otp-check').addClass('display-none');
       }
-
-
-
-
     });
-
 
     var spn = document.getElementById("count");
     var btn = document.getElementById("btnCounter");
 
-
-
     $("#btnCounter").on("click", function() {
-
 
       $("#phone").prop("readonly", true);
       $("#otp").prop("disabled", false);
       $('#btnVerify').removeClass("display-none");
 
       disableOtpBtn(180);
-
 
       toastr.options = {
 
@@ -276,7 +267,7 @@
 
       sendOtp();
 
-      (function countDown() {
+      // (function countDown() {
         // Display counter and start counting down
         spn.textContent = "Wait " + count + " sec before sending another otp!!";
 

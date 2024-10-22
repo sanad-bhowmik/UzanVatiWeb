@@ -44,7 +44,7 @@ class RazorpayController extends Controller
                 if ($request->personal_pass == $request->personal_confirm){
                     $user = new User;
                     $user->name = $request->personal_name; 
-                    $user->email = $request->personal_email;   
+                    $user->email = $request->personal_email;
                     $user->password = bcrypt($request->personal_pass);
                     $token = md5(time().$request->personal_name.$request->personal_email);
                     $user->verification_link = $token;
@@ -83,7 +83,7 @@ class RazorpayController extends Controller
         $settings = Generalsetting::findOrFail(1);
         $order = new Order;
         $order['customer_state'] = $request->state;
-        $order['shipping_state'] = $request->shipping_state;
+        $order['shipping_state'] = $request->shipping_state; 
         $success_url = action('Front\PaymentController@payreturn');
         $item_name = $settings->title." Order";
         $item_number = Str::random(4).time();

@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class BannerResource extends Resource
+class BannerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,10 +14,10 @@ class BannerResource extends Resource
      */
     public function toArray($request)
     {
-      return [
-        'id' => $this->id,
-        'image' => url('/') . '/assets/images/banners/'.$this->photo,
-        'link' => $this->link
-      ];
+        return [
+            'id' => $this->id,
+            'image' => url('/') . '/assets/images/banners/' . $this->photo,
+            'link' => $this->link,
+        ];
     }
 }

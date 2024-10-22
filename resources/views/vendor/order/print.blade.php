@@ -1,5 +1,28 @@
+<!DOCTYPE html>
 <html>
-    <head>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="author" content="">
+
+    <title>{{ $gs->title }}</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="{{ asset('assets/print/bootstrap/dist/css/bootstrap.min.css') }}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{ asset('assets/print/font-awesome/css/font-awesome.min.css') }}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="{{ asset('assets/print/Ionicons/css/ionicons.min.css') }}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ asset('assets/print/css/style.css') }}">
+    <link href="{{ asset('assets/print/css/print.css') }}" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/' . $gs->favicon) }}">
     <style type="text/css">
         @page {
             size: auto;
@@ -35,80 +58,706 @@
     </style>
 </head>
 
-<body>
-@php
-$generatorPNG = new Picqer\Barcode\BarcodeGeneratorPNG();
+<body onload="window.print();">
+    <div class="invoice-wrap">
+        <div class="invoice__title">
 
-@endphp
+            <table width="100%">
+                <tbody>
+                    <tr>
+                        <td width="50%">
+
+
+                            <p class="text-left" style="font-size: 12px;">{{ date('d/m/Y h:i:s A') }}</p>
+                            <div class="invoice__logo text-left">
+                                <img src="{{ asset('assets/images/' . $gs->invoice_logo) }}" alt="uzanvati">
+                            </div>
+                            <p class="text-left" style="font-size: 12px;">Mayer Achol Vhobon,Chatkhil
+                                Bazar,Noakhali</p>
 
 
 
 
-<table style="border:none" width="100%">
-    <tbody>
-        <tr>
-            <td><img width="200px"
-src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode('355359371107153', $generatorPNG::TYPE_CODE_128)) }}"></td>
 
-</tr>
-<tr>
-            <td><img width="200px"
-src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode('355359371107333', $generatorPNG::TYPE_CODE_128)) }}"></td>
 
-</tr>
-<tr>
-            <td><img width="200px"
-src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode('355359371107123', $generatorPNG::TYPE_CODE_128)) }}"></td>
+                        </td>
 
-</tr>
-<tr>
-            <td><img width="200px"
-src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode('355359371107433', $generatorPNG::TYPE_CODE_128)) }}"></td>
+                        <td width="50%">
+                            <H3>Invoice</H3>
+                            @php
+                                $generatorPNG = new Picqer\Barcode\BarcodeGeneratorPNG();
+                                
+                            @endphp
 
-</tr>
-<tr>
-            <td><img width="200px"
-src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode('355359371107123', $generatorPNG::TYPE_CODE_128)) }}"></td>
 
-</tr>
-<tr>
-            <td><img width="200px"
-src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode('355359371107183', $generatorPNG::TYPE_CODE_128)) }}"></td>
+                            <img width="200px"
+                                src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode($order->order_number, $generatorPNG::TYPE_CODE_128)) }}">
 
-</tr>
-<tr>
-            <td><img width="200px"
-src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode('355359371107132', $generatorPNG::TYPE_CODE_128)) }}"></td>
 
-</tr>
-<tr>
-            <td><img width="200px"
-src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode('355359371107112', $generatorPNG::TYPE_CODE_128)) }}"></td>
+                        </td>
 
-</tr>
-<tr>
-            <td><img width="200px"
-src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode('355359371107122', $generatorPNG::TYPE_CODE_128)) }}"></td>
+                    </tr>
+                </tbody>
+            </table>
 
-</tr>
-<tr>
-            <td><img width="200px"
-src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode('355359371107142', $generatorPNG::TYPE_CODE_128)) }}"></td>
+        </div>
 
-</tr>
-<tr>
-            <td><img width="200px"
-src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode('355359371107132', $generatorPNG::TYPE_CODE_128)) }}"></td>
 
-</tr>
 
-    </tbody>
 
-</table>
+
+
+        <div class="invoice__metaInfo">
+
+            <table width="100%">
+                <tbody>
+                    <tr>
+                        <td width="50%">
+                            <div class="invoice__orderDetails">
+
+                                <p><strong>{{ __('Order Details') }} </strong></p>
+
+                                <span><strong>{{ __('Order Date') }} :</strong>
+                                    {{ date('d/m/Y h:i:s A', strtotime($order->created_at)) }}</span><br>
+                                <span><strong>{{ __('Order Number') }} :</strong>
+                                    {{ $order->order_number }}</span><br>
+                                @if ($order->dp == 0)
+                                    <span> <strong>{{ __('Shipping Method') }} :</strong>
+                                        @if ($order->shipping == 'pickup')
+                                            {{ __('Pick Up') }}
+                                        @else
+                                            {{ __('Ship To Address') }}
+                                        @endif
+                                    </span><br>
+                                @endif
+                                @php
+                                    $paymethod = $order->method;
+                                    
+                                @endphp
+                                <span> <strong>{{ __('Payment Method') }} :</strong> {{ $paymethod }}</span>
+                            </div>
+                        </td>
+
+
+                        <td width="50%">
+                            <div class="invoice__orderDetails">
+                                <p><strong>{{ __('Bill From') }}</strong></p>
+                                @php
+                                    $value = reset($cart->items);
+                                    
+                                    $shop = App\Models\User::find($value['item']['user_id']);
+                                @endphp
+                                <span><strong>{{ __('Shop Name') }}</strong>: {{ $shop->shop_name }}</span><br>
+                                <span><strong>{{ __('Shop Number') }}</strong>: {{ $shop->shop_number }}</span><br>
+                                <span><strong>{{ __('Shop Address') }}</strong>: {{ $shop->shop_address }}</span><br>
+
+
+
+                            </div>
+                        </td>
+
+
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="invoice__metaInfo" style="margin-top:0px;">
+            @if ($order->dp == 0)
+                <div class="col-lg-6">
+                    <div class="invoice__orderDetails" style="margin-top:5px;">
+                        <p><strong>{{ __('Bill To') }}</strong></p>
+                        <span><strong>{{ __('Customer Name') }}</strong>:
+                            {{ $order->shipping_name == null ? $order->customer_name : $order->shipping_name }}</span><br>
+                        <span><strong>{{ __('Customer Phone') }}</strong>:
+                            {{ $order->shipping_phone == null ? $order->customer_phone : $order->shipping_phone }}</span><br>
+                        <span><strong>{{ __('Delivery Address') }}</strong>:
+                            {{ $order->shipping_address == null ? $order->customer_address : $order->shipping_address }}</span><br>
+                        <span><strong>Thana/Area</strong>:
+                            {{ $order->shipping_state == null ? $order->customer_state : $order->shipping_state }}</span><br>
+                        <span><strong>{{ __('District') }}</strong>:
+                            {{ $order->shipping_city == null ? $order->customer_city : $order->shipping_city }}</span>
+
+                    </div>
+                </div>
+            @endif
+
+        </div>
+
+        <div class="col-lg-12">
+            <div class="invoice_table">
+                <div class="mr-table">
+                    <div class="table-responsive">
+                        <table id="example2" class="table table-hover dt-responsive" cellspacing="0" width="100%">
+                            <thead style="border-top:1px solid rgba(0, 0, 0, 0.1) !important;">
+                                <tr>
+                                    <th>SL</th>
+                                    <th>Item</th>
+                                    <th>{{ __('Details') }}</th>
+                                    <th>{{ __('Qty') }}</th>
+                                    <th>{{ __('Total') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $subtotal = 0;
+                                    $tax = 0;
+                                @endphp
+                                @foreach ($cart->items as $product)
+                                    <tr>
+                                        <td>{{ $loop->index + 1 }}</td>
+                                        <td width="50%">
+                                            <img width="60" height="60"
+                                                src="{{ asset('assets/images/products/' . $product['item']['photo']) }}"
+                                                alt="No-Image">
+                                            @if ($product['item']['user_id'] != 0)
+                                                @php
+                                                    
+                                                    $user = App\Models\User::find($product['item']['user_id']);
+                                                @endphp
+                                                @if (isset($user))
+                                                    {{ $product['item']['name'] }}
+                                                @else
+                                                    {{ $product['item']['name'] }}
+                                                @endif
+                                            @else
+                                                {{ $product['item']['name'] }}
+                                            @endif
+
+
+
+                                        </td>
+
+                                        <td>
+                                            @if ($product['size'])
+                                                <p>
+                                                    <strong>{{ __('Size') }} :</strong>
+                                                    {{ str_replace('-', ' ', $product['size']) }}
+                                                </p>
+                                            @endif
+                                            @if ($product['color'])
+                                                <p>
+                                                    <strong>{{ __('color') }} :</strong> <span
+                                                        style="width: 20px; height: 5px; display: block; border: 10px solid {{ $product['color'] == '' ? 'white' : '#' . $product['color'] }};"></span>
+                                                </p>
+                                            @endif
+                                            <p>
+                                                <strong>{{ __('Price') }} :</strong>
+                                                {{ $order->currency_sign }}{{ round($product['item_price'] * $order->currency_value, 2) }}
+                                            </p>
+
+
+
+                                            @if (!empty($product['keys']))
+                                                @foreach (array_combine(explode(',', $product['keys']), explode(',', $product['values'])) as $key => $value)
+                                                    <p>
+
+                                                        <b>{{ ucwords(str_replace('_', ' ', $key)) }} : </b>
+                                                        {{ $value }}
+
+                                                    </p>
+                                                @endforeach
+                                            @endif
+
+                                        </td>
+                                        <td>
+                                            <p>
+                                                {{ $product['qty'] }} {{ $product['item']['measure'] }}
+                                            </p>
+                                        </td>
+
+                                        <td>{{ $order->currency_sign }}{{ round($product['price'] * $order->currency_value, 2) }}
+                                        </td>
+                                        @php
+                                            $subtotal += round($product['price'] * $order->currency_value, 2);
+                                        @endphp
+
+                                    </tr>
+                                @endforeach
+
+                                <tr class="semi-border">
+                                    <td colspan="3"></td>
+                                    <td><strong>{{ __('Subtotal') }}</strong></td>
+                                    <td>{{ $order->currency_sign }}{{ round($subtotal, 2) }}</td>
+
+                                </tr>
+                                @if ($order->shipping_cost != 0)
+                                    @php
+                                        $price = round($order->shipping_cost / $order->currency_value, 2);
+                                    @endphp
+                                    @if (DB::table('shippings')->where('price', '=', $price)->count() > 0)
+                                        <tr class="no-border">
+                                            <td colspan="3"></td>
+                                            <td><strong>{{ DB::table('shippings')->where('price', '=', $price)->first()->title }}({{ $order->currency_sign }})</strong>
+                                            </td>
+                                            <td>{{ round($order->shipping_cost, 2) }}</td>
+                                        </tr>
+                                    @endif
+                                @endif
+
+                                @if ($order->packing_cost != 0)
+                                    @php
+                                        $pprice = round($order->packing_cost / $order->currency_value, 2);
+                                    @endphp
+                                    @if (DB::table('packages')->where('price', '=', $pprice)->count() > 0)
+                                        <tr class="no-border">
+                                            <td colspan="3"></td>
+                                            <td><strong>{{ DB::table('packages')->where('price', '=', $pprice)->first()->title }}({{ $order->currency_sign }})</strong>
+                                            </td>
+                                            <td>{{ round($order->packing_cost, 2) }}</td>
+                                        </tr>
+                                    @endif
+                                @endif
+
+                                @if ($order->tax != 0)
+                                    <tr class="no-border">
+                                        <td colspan="3"></td>
+                                        <td><strong>{{ __('TAX') }}({{ $order->currency_sign }})</strong></td>
+
+                                        @php
+                                            $tax = ($subtotal / 100) * $order->tax;
+                                        @endphp
+
+                                        <td>{{ round($tax, 2) }}</td>
+                                    </tr>
+                                @endif
+                                @if ($order->coupon_discount != null)
+                                    <tr class="no-border">
+                                        <td colspan="3"></td>
+                                        <td><strong>{{ __('Coupon Discount') }}({{ $order->currency_sign }})</strong>
+                                        </td>
+                                        <td>{{ $order->currency_sign }}{{ round($order->coupon_discount, 2) }}</td>
+                                    </tr>
+                                @endif
+
+                                @if ($order->wallet_price != 0)
+                                    <tr class="no-border">
+                                        <td colspan="3"></td>
+                                        <td><strong>{{ __('Paid From Wallet') }}</strong></td>
+                                        <td>{{ $order->currency_sign }}{{ round($order->wallet_price * $order->currency_value, 2) }}
+                                        </td>
+                                    </tr>
+                                    @if ($order->method != 'Wallet')
+                                        <tr class="no-border">
+                                            <td colspan="3"></td>
+                                            <td><strong>{{ $order->method }}</strong></td>
+                                            <td>{{ $order->currency_sign }}{{ round($order->pay_amount * $order->currency_value, 2) }}
+                                            </td>
+                                        </tr>
+                                    @endif
+
+                                @endif
+
+
+                                <tr class="final-border">
+                                    <td colspan="3"></td>
+                                    <td><strong>{{ __('Total') }}</strong></td>
+                                    <td>{{ $order->currency_sign }}{{ round($order->pay_amount * $order->currency_value, 2) }}
+                                    </td>
+                                </tr>
+
+
+                                <tr class="final-border2">
+                                    <td colspan="3"></td>
+                                    <td><strong>Paid</strong></td>
+                                    <td>{{ $order->currency_sign }}{{ round($order->paid_amount * $order->currency_value, 2) }}
+                                    </td>
+                                </tr>
+                            
+                                <tr class="final-border2">
+                                    <td colspan="3"></td>
+                                    <td><strong>Due</strong></td>
+                                    <td>
+                                        @if ($paymethod != 'Cash On Delivery')
+                                            {{ $order->currency_sign }}{{ round($order->remain_amount * $order->currency_value, 2) }}
+                                        @else
+                                            {{ $order->currency_sign }}{{ round($order->pay_amount * $order->currency_value, 2) }}
+                                        @endif
+
+                                    </td>
+                                </tr>
+                               
+
+                                <tr class="final-border2">
+                                    <td colspan="3">** This is computer generated, no signature is required **</td>
+                                    <td><strong>METHOD</strong></td>
+                                    <td>
+                                        @if ($paymethod != 'Cash On Delivery')
+                                            {{ $order->method }}
+                                        @else
+                                            COD (PAY FULL AMOUNT)
+                                        @endif
+
+                                    </td>
+                                </tr>
+
+
+                            </tbody>
+                           
+                        </table>
+                     
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--2nd copy -->
+    <div class="invoice-wrap" style="page-break-before: always;">
+        <div class="invoice__title">
+           
+            <table width="100%">
+                <tbody>
+                    <tr>
+                        <td width="50%">
+
+
+                            <p class="text-left" style="font-size: 12px;">{{ date('d/m/Y h:i:s A') }}</p>
+                            <div class="invoice__logo text-left">
+                                <img src="{{ asset('assets/images/' . $gs->invoice_logo) }}" alt="uzanvati">
+                            </div>
+                            <p class="text-left" style="font-size: 12px;">Mayer Achol Vhobon,Chatkhil
+                                Bazar,Noakhali</p>
+
+
+
+
+
+
+                        </td>
+
+                        <td width="50%">
+                            <H3>Invoice</H3>
+                           
+
+
+                            <img width="200px"
+                                src="data:image/png;base64,{{ base64_encode($generatorPNG->getBarcode($order->order_number, $generatorPNG::TYPE_CODE_128)) }}">
+
+
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+
+
+
+
+
+        <div class="invoice__metaInfo">
+
+            <table width="100%">
+                <tbody>
+                    <tr>
+                        <td width="50%">
+                            <div class="invoice__orderDetails">
+
+                                <p><strong>{{ __('Order Details') }} </strong></p>
+
+                                <span><strong>{{ __('Order Date') }} :</strong>
+                                    {{ date('d/m/Y h:i:s A', strtotime($order->created_at)) }}</span><br>
+                                <span><strong>{{ __('Order Number') }} :</strong>
+                                    {{ $order->order_number }}</span><br>
+                                @if ($order->dp == 0)
+                                    <span> <strong>{{ __('Shipping Method') }} :</strong>
+                                        @if ($order->shipping == 'pickup')
+                                            {{ __('Pick Up') }}
+                                        @else
+                                            {{ __('Ship To Address') }}
+                                        @endif
+                                    </span><br>
+                                @endif
+                             
+                                <span> <strong>{{ __('Payment Method') }} :</strong> {{ $paymethod }}</span>
+                            </div>
+                        </td>
+
+
+                        <td width="50%">
+                            <div class="invoice__orderDetails">
+                                <p><strong>{{ __('Bill From') }}</strong></p>
+                                @php
+                                    $value = reset($cart->items);
+                                    
+                                    $shop = App\Models\User::find($value['item']['user_id']);
+                                @endphp
+                                <span><strong>{{ __('Shop Name') }}</strong>: {{ $shop->shop_name }}</span><br>
+                                <span><strong>{{ __('Shop Number') }}</strong>: {{ $shop->shop_number }}</span><br>
+                                <span><strong>{{ __('Shop Address') }}</strong>:
+                                    {{ $shop->shop_address }}</span><br>
+
+
+
+                            </div>
+                        </td>
+
+
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="invoice__metaInfo" style="margin-top:0px;">
+            @if ($order->dp == 0)
+                <div class="col-lg-6">
+                    <div class="invoice__orderDetails" style="margin-top:5px;">
+                        <p><strong>{{ __('Bill To') }}</strong></p>
+                        <span><strong>{{ __('Customer Name') }}</strong>:
+                            {{ $order->shipping_name == null ? $order->customer_name : $order->shipping_name }}</span><br>
+                        <span><strong>{{ __('Customer Phone') }}</strong>:
+                            {{ $order->shipping_phone == null ? $order->customer_phone : $order->shipping_phone }}</span><br>
+                        <span><strong>{{ __('Delivery Address') }}</strong>:
+                            {{ $order->shipping_address == null ? $order->customer_address : $order->shipping_address }}</span><br>
+                        <span><strong>Thana/Area</strong>:
+                            {{ $order->shipping_state == null ? $order->customer_state : $order->shipping_state }}</span><br>
+                        <span><strong>{{ __('District') }}</strong>:
+                            {{ $order->shipping_city == null ? $order->customer_city : $order->shipping_city }}</span>
+
+                    </div>
+                </div>
+            @endif
+
+        </div>
+
+        <div class="col-lg-12">
+            <div class="invoice_table">
+                <div class="mr-table">
+                    <div class="table-responsive">
+                        <table id="example2" class="table table-hover dt-responsive" cellspacing="0"
+                            width="100%">
+                            <thead style="border-top:1px solid rgba(0, 0, 0, 0.1) !important;">
+                                <tr>
+                                    <th>SL</th>
+                                    <th>Item</th>
+                                    <th>{{ __('Details') }}</th>
+                                    <th>{{ __('Qty') }}</th>
+                                    <th>{{ __('Total') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $subtotal = 0;
+                                    $tax = 0;
+                                @endphp
+                                @foreach ($cart->items as $product)
+                                    <tr>
+                                        <td>{{ $loop->index + 1 }}</td>
+                                        <td width="50%">
+                                            <img width="60" height="60"
+                                                src="{{ asset('assets/images/products/' . $product['item']['photo']) }}"
+                                                alt="No-Image">
+                                            @if ($product['item']['user_id'] != 0)
+                                                @php
+                                                    
+                                                    $user = App\Models\User::find($product['item']['user_id']);
+                                                @endphp
+                                                @if (isset($user))
+                                                    {{ $product['item']['name'] }}
+                                                @else
+                                                    {{ $product['item']['name'] }}
+                                                @endif
+                                            @else
+                                                {{ $product['item']['name'] }}
+                                            @endif
+
+
+
+                                        </td>
+
+                                        <td>
+                                            @if ($product['size'])
+                                                <p>
+                                                    <strong>{{ __('Size') }} :</strong>
+                                                    {{ str_replace('-', ' ', $product['size']) }}
+                                                </p>
+                                            @endif
+                                            @if ($product['color'])
+                                                <p>
+                                                    <strong>{{ __('color') }} :</strong> <span
+                                                        style="width: 20px; height: 5px; display: block; border: 10px solid {{ $product['color'] == '' ? 'white' : '#' . $product['color'] }};"></span>
+                                                </p>
+                                            @endif
+                                            <p>
+                                                <strong>{{ __('Price') }} :</strong>
+                                                {{ $order->currency_sign }}{{ round($product['item_price'] * $order->currency_value, 2) }}
+                                            </p>
+
+
+
+                                            @if (!empty($product['keys']))
+                                                @foreach (array_combine(explode(',', $product['keys']), explode(',', $product['values'])) as $key => $value)
+                                                    <p>
+
+                                                        <b>{{ ucwords(str_replace('_', ' ', $key)) }} : </b>
+                                                        {{ $value }}
+
+                                                    </p>
+                                                @endforeach
+                                            @endif
+
+                                        </td>
+                                        <td>
+                                            <p>
+                                                {{ $product['qty'] }} {{ $product['item']['measure'] }}
+                                            </p>
+                                        </td>
+
+                                        <td>{{ $order->currency_sign }}{{ round($product['price'] * $order->currency_value, 2) }}
+                                        </td>
+                                        @php
+                                            $subtotal += round($product['price'] * $order->currency_value, 2);
+                                        @endphp
+
+                                    </tr>
+                                @endforeach
+
+                                <tr class="semi-border">
+                                    <td colspan="3"></td>
+                                    <td><strong>{{ __('Subtotal') }}</strong></td>
+                                    <td>{{ $order->currency_sign }}{{ round($subtotal, 2) }}</td>
+
+                                </tr>
+                                @if ($order->shipping_cost != 0)
+                                    @php
+                                        $price = round($order->shipping_cost / $order->currency_value, 2);
+                                    @endphp
+                                    @if (DB::table('shippings')->where('price', '=', $price)->count() > 0)
+                                        <tr class="no-border">
+                                            <td colspan="3"></td>
+                                            <td><strong>{{ DB::table('shippings')->where('price', '=', $price)->first()->title }}({{ $order->currency_sign }})</strong>
+                                            </td>
+                                            <td>{{ round($order->shipping_cost, 2) }}</td>
+                                        </tr>
+                                    @endif
+                                @endif
+
+                                @if ($order->packing_cost != 0)
+                                    @php
+                                        $pprice = round($order->packing_cost / $order->currency_value, 2);
+                                    @endphp
+                                    @if (DB::table('packages')->where('price', '=', $pprice)->count() > 0)
+                                        <tr class="no-border">
+                                            <td colspan="3"></td>
+                                            <td><strong>{{ DB::table('packages')->where('price', '=', $pprice)->first()->title }}({{ $order->currency_sign }})</strong>
+                                            </td>
+                                            <td>{{ round($order->packing_cost, 2) }}</td>
+                                        </tr>
+                                    @endif
+                                @endif
+
+                                @if ($order->tax != 0)
+                                    <tr class="no-border">
+                                        <td colspan="3"></td>
+                                        <td><strong>{{ __('TAX') }}({{ $order->currency_sign }})</strong></td>
+
+                                        @php
+                                            $tax = ($subtotal / 100) * $order->tax;
+                                        @endphp
+
+                                        <td>{{ round($tax, 2) }}</td>
+                                    </tr>
+                                @endif
+                                @if ($order->coupon_discount != null)
+                                    <tr class="no-border">
+                                        <td colspan="3"></td>
+                                        <td><strong>{{ __('Coupon Discount') }}({{ $order->currency_sign }})</strong>
+                                        </td>
+                                        <td>{{ $order->currency_sign }}{{ round($order->coupon_discount, 2) }}</td>
+                                    </tr>
+                                @endif
+
+                                @if ($order->wallet_price != 0)
+                                    <tr class="no-border">
+                                        <td colspan="3"></td>
+                                        <td><strong>{{ __('Paid From Wallet') }}</strong></td>
+                                        <td>{{ $order->currency_sign }}{{ round($order->wallet_price * $order->currency_value, 2) }}
+                                        </td>
+                                    </tr>
+                                    @if ($order->method != 'Wallet')
+                                        <tr class="no-border">
+                                            <td colspan="3"></td>
+                                            <td><strong>{{ $order->method }}</strong></td>
+                                            <td>{{ $order->currency_sign }}{{ round($order->pay_amount * $order->currency_value, 2) }}
+                                            </td>
+                                        </tr>
+                                    @endif
+
+                                @endif
+
+
+                                <tr class="final-border">
+                                    <td colspan="3"></td>
+                                    <td><strong>{{ __('Total') }}</strong></td>
+                                    <td>{{ $order->currency_sign }}{{ round($order->pay_amount * $order->currency_value, 2) }}
+                                    </td>
+                                </tr>
+
+
+                                <tr class="final-border2">
+                                    <td colspan="3"></td>
+                                    <td><strong>Paid</strong></td>
+                                    <td>{{ $order->currency_sign }}{{ round($order->paid_amount * $order->currency_value, 2) }}
+                                    </td>
+                                </tr>
+                                <tr class="final-border2">
+                                    <td colspan="3"></td>
+                                    <td><strong>Due</strong></td>
+                                    <td>
+                                        
+                                        @if ($paymethod != 'Cash On Delivery')
+                                        {{ $order->currency_sign }}{{ round($order->remain_amount * $order->currency_value, 2) }}
+                                        @else
+                                        {{ $order->currency_sign }}{{ round($order->pay_amount * $order->currency_value, 2) }}
+                                        @endif
+                                        
+                                        
+                                       
+                                    </td>
+                                </tr>
+
+
+                                <tr class="final-border2">
+                                    <td colspan="3">** This is computer generated, no signature is required **</td>
+                                    <td><strong>METHOD</strong></td>
+                                    <td>
+                                        @if ($paymethod != 'Cash On Delivery')
+                                            {{ $paymethod}}
+                                        @else
+                                            COD (PAY FULL AMOUNT)
+                                        @endif
+
+                                    </td>
+                                </tr>
+
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script type="text/javascript">
+        setTimeout(function() {
+            window.close();
+        }, 500);
+    </script>
+
+
+
+
 
 
 </body>
 
 </html>
-
-

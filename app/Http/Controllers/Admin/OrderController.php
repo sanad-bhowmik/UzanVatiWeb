@@ -78,7 +78,11 @@ class OrderController extends Controller
             elseif($status == 'confirmed'){
                 $datas = Order::where('status','=','confirmed')->where('user_id','!=',0)->orderBy('id','desc')->get();
             }
-            
+
+            elseif($status == 'picked'){
+                $datas = Order::where('status','=','picked')->where('user_id','!=',0)->orderBy('id','desc')->get();
+            }
+
             elseif($status == 'shipped'){
                 $datas = Order::where('status','=','shipped')->where('user_id','!=',0)->orderBy('id','desc')->get();
             }
@@ -106,7 +110,7 @@ class OrderController extends Controller
                                 ->editColumn('status', function (Order $data) {
                                     
                                    
-                                    if($data->status=="confirmed"){
+                                    if($data->status=="picked"){
                                         return 'picked';
                                     }
                                     else if($data->status=="completed"){
@@ -357,6 +361,10 @@ class OrderController extends Controller
     {
         return view('admin.order.confirmed');
     }
+    public function picked()
+    {
+        return view('admin.order.picked');
+    }
     public function processing()
     {
         return view('admin.order.processing');
@@ -388,7 +396,10 @@ class OrderController extends Controller
     {
         return view('admin.order.confirmedShop');
     }
-
+    public function pickedShop()
+    {
+        return view('admin.order.pickedShop');
+    }
     public function completedShop()
     {
         return view('admin.order.completedShop');

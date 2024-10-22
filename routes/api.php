@@ -9,18 +9,18 @@ Route::post('/foster/sub/notify', 'User\FosterController@notify')->name('user.fo
 Route::post('/foster/vendor/notify', 'Vendor\FosterController@notify')->name('vendor.foster.notify');
 
 
-//Route::post('/bkash/sub/notify', 'User\FosterController@notify')->name('user.foster.notify');
-//Route::post('/bkash/vendor/notify', 'Vendor\FosterController@notify')->name('vendor.foster.notify');
+Route::post('/bkash/sub/notify', 'User\FosterController@notify')->name('user.foster.notify');
+Route::post('/bkash/vendor/notify', 'Vendor\FosterController@notify')->name('vendor.foster.notify');
  
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
+
+// |--------------------------------------------------------------------------
+// | API Routes
+// |--------------------------------------------------------------------------
+// |
+// | Here is where you can register API routes for your application. These
+// | routes are loaded by the RouteServiceProvider within a group which
+// | is assigned the "api" middleware group. Enjoy building your API!
+// |
 
 
 Route::group(['prefix' => 'vendor'], function () {
@@ -41,7 +41,7 @@ Route::group(['prefix' => 'vendor'], function () {
 
             // ---------------------VENDOR CONTROLLER ---------------------
 
-            Route::get('details', 'Api\Vendor\VendorController@details');
+            Route::get('/details', 'Api\Vendor\VendorController@details');
             Route::post('/verify', 'Api\Vendor\VendorController@verifysubmit');
             Route::post('/profile/update', 'Api\Vendor\VendorController@profileupdate');
             Route::post('/social/link/update', 'Api\Vendor\VendorController@social_link_update');
@@ -132,10 +132,13 @@ Route::group(['prefix' => 'user'], function () {
     Route::post('login', 'Api\Auth\AuthController@login');
     Route::post('logout', 'Api\Auth\AuthController@logout');
     Route::post('forgot', 'Api\Auth\AuthController@forgot');
+    Route::get('getUserData', 'Api\Auth\AuthController@getUserData');
     Route::post('forgot/submit', 'Api\Auth\AuthController@forgot_submit');
     Route::post('social/login', 'Api\Auth\AuthController@social_login');
     Route::post('refresh/token', 'Api\Auth\AuthController@refresh');
     Route::get('details', 'Api\Auth\AuthController@details');
+    Route::post('verify/otp', 'Api\Auth\AuthController@verifyOtp');
+    Route::post('deleteAccount', 'Api\Auth\AuthController@deleteAccount');
     
     Route::group(['middleware' => 'auth:api'], function () {
 
@@ -149,8 +152,12 @@ Route::group(['prefix' => 'user'], function () {
 
         // --------------------- USER PROFILE ---------------------
 
-        Route::post('/profile/update', 'Api\User\ProfileController@update');
+       Route::post('/profile/update', 'Api\User\ProfileController@update');
+        Route::post('/profile/updateImg', 'Api\User\ProfileController@updateImg');
         Route::post('/password/update', 'Api\User\ProfileController@updatePassword');
+          Route::post('/address/update', 'Api\User\ProfileController@updateadd');
+        Route::post('/address/add', 'Api\User\ProfileController@add');
+        Route::post('/address/delete', 'Api\User\ProfileController@delete');
 
         // --------------------- USER PROFILE ENDS ---------------------
 
@@ -201,7 +208,9 @@ Route::group(['prefix' => 'user'], function () {
         Route::get('/orders', 'Api\User\OrderController@orders')->name('orders');
         Route::get('/order/{id}/details', 'Api\User\OrderController@order')->name('order');
         Route::post('/update/transactionid', 'Api\User\OrderController@updateTransaction');
-
+        Route::post('/order/{id}/cancel', 'Api\User\OrderController@cancelOrder')->name('order.cancel');
+        Route::post('/order', 'Api\User\OrderController@orderProducts')->name('order.products');
+        Route::post('/cartorder', 'Api\User\OrderController@Multipleorder')->name('order.multiple');
         // ---------------------ORDER CONTROLLER ENDS ---------------------
 
         // ---------------------WITHDRAW CONTROLLER ---------------------
@@ -267,7 +276,13 @@ Route::group(['prefix' => 'front'], function () {
     Route::get('/blogs', 'Api\Front\FrontendController@blogs');
     Route::get('/pages', 'Api\Front\FrontendController@pages');
     Route::get('/ordertrack','Api\Front\FrontendController@ordertrack');
+    Route::get('/orders/filter', 'Api\Front\FrontendController@filterOrdersByStatus');
     Route::post('/contactmail', 'Api\Front\FrontendController@contactmail');
+    Route::get('/brands', 'Api\Front\FrontendController@getBrands');
+    Route::get('/vendorlist', 'Api\Front\FrontendController@vendorlist');
+    Route::get('/ShopProducts', 'Api\Front\FrontendController@getVendorProducts');
+    Route::get('/order/product', 'Api\Front\FrontendController@orderProduct');
+    Route::get('/brand/products', 'Api\Front\FrontendController@getBrandProducts');
 
     //------------ Frontend Controller Ends ------------
 
@@ -275,6 +290,7 @@ Route::group(['prefix' => 'front'], function () {
 
     Route::get('/search','Api\Front\SearchController@search');
     Route::get('/categories', 'Api\Front\SearchController@categories');
+    Route::post('/categories/{id?}', 'Api\Front\SearchController@categories1');
     Route::get('{id}/category', 'Api\Front\SearchController@category');
     Route::get('/{id}/subcategories', 'Api\Front\SearchController@subcategories')->name('subcategories');
     Route::get('/{id}/childcategories', 'Api\Front\SearchController@childcategories')->name('childcategories');
@@ -317,4 +333,4 @@ Route::fallback(function () {
 });
 
 
-*/
+

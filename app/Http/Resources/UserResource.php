@@ -4,8 +4,9 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\Resource;
 use App\Models\Generalsetting;
+use Razorpay\Api\Resource as ApiResource;
 
-class UserResource extends Resource
+class UserResource extends ApiResource
 {
     /**
      * Transform the resource into an array.
